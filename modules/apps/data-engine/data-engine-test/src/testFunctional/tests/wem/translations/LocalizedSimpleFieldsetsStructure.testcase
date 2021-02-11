@@ -11,6 +11,10 @@ definition {
 		User.firstLoginPG();
 
 		JSONGroup.addGroup(groupName = "Test Site Name");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		NavItem.gotoStructures();
 	}
 
 	tearDown {
@@ -37,9 +41,6 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I want to define reusable translations when creating WEM Structures with fieldset"
 	@priority = "5"
 	test CheckFieldsetTranslationsOnStructure {
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
@@ -115,10 +116,6 @@ definition {
 		var fieldsetLabel = "Test Fieldset";
 		var fieldsetName = "Test Fieldset";
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(structureName = "${structureTitle}");
 
 		DataEngine.addFieldsets(
@@ -165,9 +162,6 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I want to define reusable translations when creating WEM Structures with fieldset"
 	@priority = "4"
 	test DefaultTitlePersistsUponFirstlyTranslatingForAnotherLocale {
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP();
 
@@ -237,9 +231,6 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I want to define reusable translations when creating WEM Structures with fieldset"
 	@priority = "5"
 	test TranslateFieldsetToNLanguages {
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
@@ -262,9 +253,6 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I want to define reusable translations when creating WEM Structures with fieldset"
 	@priority = "5"
 	test TranslateFieldsetWithNestedFields {
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "Structure Description Test",
@@ -341,9 +329,6 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I want to define reusable translations when creating WEM Structures with fieldset"
 	@priority = "5"
 	test TranslateFieldsetWithNestedNTranslations {
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
@@ -525,9 +510,6 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I want to define reusable translations when creating WEM Structures with fieldset"
 	@priority = "5"
 	test TranslateFieldsetWithNNestedNTranslation {
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
@@ -852,9 +834,6 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I want to define reusable translations when creating WEM Structures with fieldset"
 	@priority = "4"
 	test VerifyNestedFieldsetEditionOnStructure {
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
