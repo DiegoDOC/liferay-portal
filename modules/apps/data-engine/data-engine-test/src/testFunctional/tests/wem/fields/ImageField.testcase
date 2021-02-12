@@ -80,7 +80,6 @@ definition {
 	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can duplicate the image field"
 	@priority = "4"
 	test DuplicateImageField {
-
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
 		DataEngine.addField(
@@ -159,10 +158,9 @@ definition {
 	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user is required to define a description for an uploaded image"
 	@priority = "4"
 	test PublishWebContentWithUploadedImageWithoutDescription {
-
 		var structureTitle = "Image Field Structure";
-        var webContentName = "Web Content";
-        var fileName = "Document_1.jpg";
+		var webContentName = "Web Content";
+		var fileName = "Document_1.jpg";
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentTitle = "Document Title",
@@ -201,24 +199,22 @@ definition {
 
 		NavItem.click(navItem = "Web Content");
 
-		WebContentNavigator.gotoEditCP(
-			webContentTitle = "${webContentName}");
+		WebContentNavigator.gotoEditCP(webContentTitle = "${webContentName}");
 
 		Button.clickPublish();
-				
+
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#WARNING_FEEDBACK",
 			value1 = "This field is required.");
-		
+
 		WebContent.setImageDescription(
 			fieldFieldLabel = "Image",
 			webContentImageDescription = "Description");
 
 		Button.clickPublish();
 
-		WebContentNavigator.gotoEditCP(
-			webContentTitle = "${webContentName}");
-		
+		WebContentNavigator.gotoEditCP(webContentTitle = "${webContentName}");
+
 		AssertTextEquals(
 			key_fieldFieldLabel = "Image",
 			locator1 = "WCEditWebContent#IMAGE_DESCRPTION",
@@ -322,7 +318,6 @@ definition {
 	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can set the image field as repeatable"
 	@priority = "3"
 	test SetImageFieldAsRepeatable {
-		
 		var structureTitle = "Image field Structure";
 
 		WebContentStructures.addCP(structureName = "${structureTitle}");
@@ -338,7 +333,6 @@ definition {
 		WebContentNavigator.gotoEditStructure(structureName = "${structureTitle}");
 
 		AssertElementNotPresent(locator1 = "Icon#ASTERISK");
-
 	}
 
 	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can add a field label"
@@ -380,7 +374,6 @@ definition {
 	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can show/hide label"
 	@priority = "3"
 	test ShowAndHideImageFieldLabel {
-
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
 		DataEngine.addField(

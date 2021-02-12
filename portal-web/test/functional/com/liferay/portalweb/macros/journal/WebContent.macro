@@ -1623,6 +1623,13 @@ definition {
 			value1 = "${templateName}");
 	}
 
+	macro setImageDescription {
+		Type(
+			key_fieldFieldLabel = "${fieldFieldLabel}",
+			locator1 = "WCEditWebContent#IMAGE_DESCRPTION",
+			value1 = "${webContentImageDescription}");
+	}
+
 	macro subscribeToCurrentFolderCP {
 		Pause(locator1 = "3000");
 
@@ -2661,11 +2668,4 @@ definition {
 		SelectFrameTop();
 	}
 
-	macro setImageDescription{
-		Type(
-			key_fieldFieldLabel = "${fieldFieldLabel}",
-			locator1 = "WCEditWebContent#IMAGE_DESCRPTION",
-			value1 = "${webContentImageDescription}");
-	}
-
-	}
+}
