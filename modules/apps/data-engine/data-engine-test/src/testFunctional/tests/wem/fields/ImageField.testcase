@@ -28,7 +28,7 @@ definition {
 		}
 	}
 
-	@description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can clear the uploaded image from form by clicking on Clear button"
 	@priority = "4"
 	test ClearUploadedImage {
 		property portal.acceptance = "false";
@@ -77,7 +77,7 @@ definition {
 		AssertElementNotPresent(locator1 = "WCD#WEB_CONTENT_CONTENT_IMAGE");
 	}
 
-	@description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can duplicate the image field"
 	@priority = "4"
 	test DuplicateImageField {
 
@@ -235,7 +235,7 @@ definition {
 
 	}
 
-	@description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can define a help text"
 	@priority = "4"
 	test SetHelpTextOfImageField {
 		property portal.acceptance = "false";
@@ -275,7 +275,7 @@ definition {
 			value1 = "${fieldHelp}");
 	}
 
-	@description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can define a description for the uploaded image"
 	@priority = "4"
 	test SetImageDescriptionOnWebContent {
 		property portal.acceptance = "false";
@@ -319,7 +319,7 @@ definition {
 			value1 = "My description");
 	}
 
-	@description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can set the image field as repeatable"
 	@priority = "3"
 	test SetImageFieldAsRepeatable {
 		
@@ -377,7 +377,7 @@ definition {
 			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 	}
 
-	@description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can show/hide label"
 	@priority = "3"
 	test ShowAndHideImageFieldLabel {
 
@@ -412,8 +412,7 @@ definition {
 			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 	}
 
-	@description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
-	@ignore = "true"
+	@description = "This is a test for LPS-98073. As a Developer, I want to Verify if user can upload an image from Liferay Documents and Media"
 	@priority = "5"
 	test UploadImageFromDocumentsAndMedia {
 		property portal.acceptance = "false";
