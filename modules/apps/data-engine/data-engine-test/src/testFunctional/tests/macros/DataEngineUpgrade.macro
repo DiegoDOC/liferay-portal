@@ -1,25 +1,23 @@
 definition {
 
 	macro createNewStructureUsingAnUpgradedStructureAsFieldset {
-
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "Structure Title");
 
-        DataEngine.addFieldsets(fieldsetName = "My structure with nested fields");
+		DataEngine.addFieldsets(fieldsetName = "My structure with nested fields");
 
 		Button.clickSave();
 
-        WebContentNavigator.gotoEditStructure(
-            structureName = "Structure Title");
-        
-        AssertVisible(
+		WebContentNavigator.gotoEditStructure(structureName = "Structure Title");
+
+		AssertVisible(
 			key_fieldsetLabel = "My structure with nested fields",
 			locator1 = "DDMEditStructure#FORM_FIELD_SETS_CONTAINER_LABEL");
 
-        AssertVisible(
+		AssertVisible(
 			key_fieldFieldLabel = "Fields Group",
 			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 
