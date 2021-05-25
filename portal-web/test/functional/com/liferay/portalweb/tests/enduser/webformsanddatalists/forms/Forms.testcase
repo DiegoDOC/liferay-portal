@@ -2095,11 +2095,12 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-78697."
-	@ignore = "true"
 	@priority = "4"
 	test EditTranslatedGridField {
+		property portal.acceptance = "true";
+        property portal.upstream = "true";
 		property test.name.skip.portal.instance = "Forms#EditTranslatedGridField";
-
+		
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -5381,9 +5382,10 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-66513."
-	@ignore = "true"
 	@priority = "3"
 	test ViewFormWithMultipleSelectionFieldAsASwitcherAndHideLabel {
+		property portal.acceptance = "true";
+        property portal.upstream = "true";
 		property test.name.skip.portal.instance = "Forms#ViewFormWithMultipleSelectionFieldAsASwitcherAndHideLabel";
 
 		Navigator.openURL();
