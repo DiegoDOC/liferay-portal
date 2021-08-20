@@ -15,7 +15,6 @@
 import ClayAutocomplete from '@clayui/autocomplete';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
-import {usePrevious} from '@liferay/frontend-js-react-web';
 import {normalizeFieldName} from 'data-engine-js-components-web';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
@@ -24,13 +23,10 @@ import {useSyncValue} from '../hooks/useSyncValue.es';
 import withConfirmationField from '../util/withConfirmationField.es';
 
 const Text = ({
-	defaultLanguageId,
 	disabled,
-	editingLanguageId,
 	fieldName,
 	id,
-	localizable,
-	localizedValue,
+	locale,
 	maxLength,
 	name,
 	onBlur,
@@ -41,32 +37,9 @@ const Text = ({
 	syncDelay,
 	value: initialValue,
 }) => {
-	const [value, setValue] = useSyncValue(
-		initialValue,
-		syncDelay,
-		editingLanguageId
-	);
+	const [value, setValue] = useSyncValue(initialValue, syncDelay, locale);
 
 	const inputRef = useRef(null);
-
-	const prevEditingLanguageId = usePrevious(editingLanguageId);
-
-	useEffect(() => {
-		if (prevEditingLanguageId !== editingLanguageId && localizable) {
-			const newValue =
-				localizedValue[editingLanguageId] !== undefined
-					? localizedValue[editingLanguageId]
-					: localizedValue[defaultLanguageId];
-			setValue(newValue);
-		}
-	}, [
-		defaultLanguageId,
-		editingLanguageId,
-		localizable,
-		localizedValue,
-		prevEditingLanguageId,
-		setValue,
-	]);
 
 	useEffect(() => {
 		if (
@@ -91,10 +64,10 @@ const Text = ({
 		<ClayInput
 			aria-labelledby={id}
 			className="ddm-field-text"
-			dir={Liferay.Language.direction[editingLanguageId]}
+			dir={Liferay.Language.direction[locale]}
 			disabled={disabled}
 			id={id}
-			lang={editingLanguageId}
+			lang={locale}
 			maxLength={maxLength}
 			name={name}
 			onBlur={(event) => {
@@ -129,30 +102,26 @@ const Text = ({
 
 const Textarea = ({
 	disabled,
-	editingLanguageId,
 	id,
+	locale,
 	name,
 	onBlur,
 	onChange,
 	onFocus,
 	placeholder,
-	syncDelay,
-	value: initialValue,
+	value,
 }) => {
-	const [value, setValue] = useSyncValue(initialValue, syncDelay);
-
 	return (
 		<textarea
 			aria-labelledby={id}
 			className="ddm-field-text form-control"
-			dir={Liferay.Language.direction[editingLanguageId]}
+			dir={Liferay.Language.direction[locale]}
 			disabled={disabled}
 			id={id}
-			lang={editingLanguageId}
+			lang={locale}
 			name={name}
 			onBlur={onBlur}
 			onChange={(event) => {
-				setValue(event.target.value);
 				onChange(event);
 			}}
 			onFocus={onFocus}
@@ -166,19 +135,17 @@ const Textarea = ({
 
 const Autocomplete = ({
 	disabled,
-	editingLanguageId,
 	id,
+	locale,
 	name,
 	onBlur,
 	onChange,
 	onFocus,
 	options,
 	placeholder,
-	syncDelay,
-	value: initialValue,
+	value,
 }) => {
 	const [selectedItem, setSelectedItem] = useState(false);
-	const [value, setValue] = useSyncValue(initialValue, syncDelay);
 	const [visible, setVisible] = useState(false);
 	const inputRef = useRef(null);
 	const itemListRef = useRef(null);
@@ -246,14 +213,13 @@ const Autocomplete = ({
 		<ClayAutocomplete>
 			<ClayAutocomplete.Input
 				aria-labelledby={id}
-				dir={Liferay.Language.direction[editingLanguageId]}
+				dir={Liferay.Language.direction[locale]}
 				disabled={disabled}
 				id={id}
-				lang={editingLanguageId}
+				lang={locale}
 				name={name}
 				onBlur={onBlur}
 				onChange={(event) => {
-					setValue(event.target.value);
 					setVisible(!!event.target.value);
 					setSelectedItem(false);
 					onChange(event);
@@ -319,7 +285,6 @@ const Autocomplete = ({
 							key={index}
 							match={value}
 							onClick={() => {
-								setValue(label);
 								setVisible(false);
 								setSelectedItem(true);
 								onChange({target: {value: label}});
@@ -344,9 +309,9 @@ const Main = ({
 	autocompleteEnabled,
 	defaultLanguageId,
 	displayStyle = 'singleline',
-	editingLanguageId,
 	fieldName,
 	id,
+	locale,
 	localizable,
 	localizedValue = {},
 	maxLength,
@@ -359,7 +324,6 @@ const Main = ({
 	predefinedValue = '',
 	readOnly,
 	shouldUpdateValue = false,
-	syncDelay = true,
 	value,
 	...otherProps
 }) => {
@@ -368,11 +332,7 @@ const Main = ({
 	]);
 	const Component =
 		DISPLAY_STYLE[
-			autocomplete || autocompleteEnabled
-				? 'autocomplete'
-				: displayStyle
-				? displayStyle
-				: `singleline`
+			autocomplete || autocompleteEnabled ? 'autocomplete' : displayStyle
 		];
 
 	const fieldDetailsId = id ? id + '_fieldDetails' : name + '_fieldDetails';
@@ -389,9 +349,9 @@ const Main = ({
 			<Component
 				defaultLanguageId={defaultLanguageId}
 				disabled={readOnly}
-				editingLanguageId={editingLanguageId}
 				fieldName={fieldName}
 				id={fieldDetailsId}
+				locale={locale}
 				localizable={localizable}
 				localizedValue={localizedValue}
 				maxLength={maxLength}
@@ -402,7 +362,6 @@ const Main = ({
 				options={optionsMemo}
 				placeholder={placeholder}
 				shouldUpdateValue={shouldUpdateValue}
-				syncDelay={syncDelay}
 				value={value ? value : predefinedValue}
 			/>
 		</FieldBase>
