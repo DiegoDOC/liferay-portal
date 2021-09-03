@@ -12,232 +12,138 @@
  * details.
  */
 
-import {wait} from '@testing-library/dom';
-import {act, cleanup, render} from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import {cleanup, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {PageProvider} from 'data-engine-js-components-web';
 import moment from 'moment';
 import React from 'react';
 
 import DatePicker from '../../../src/main/resources/META-INF/resources/DatePicker/DatePicker.es';
 
-const spritemap = 'icons.svg';
-
-const defaultDatePickerConfig = {
-	locale: 'en_US',
-	localizedValue: {},
-	name: 'dateField',
-	spritemap,
-};
-
-const DatePickerWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<DatePicker {...props} />
-	</PageProvider>
-);
-
 describe('DatePicker', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (
-				/DataProvider: Trying/.test(args[0]) ||
-				/Deprecation warning: value provided is not in a recognized RFC2822 or ISO format/.test(
-					args[0]
-				)
-			) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
+	beforeEach(() => {
+		fetch.mockResponseOnce(JSON.stringify({}));
 	});
 
 	afterEach(cleanup);
 
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('has a helptext', () => {
 		const {container} = render(
-			<DatePickerWithProvider
-				{...defaultDatePickerConfig}
-				tip="Type something"
-				value="06/02/2020"
-			/>
+			<DatePicker tip="Type something" value="06/02/2020" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container.querySelector('.form-text')).toBeTruthy();
 	});
 
 	it('has a label', () => {
-		const {container} = render(
-			<DatePickerWithProvider
-				{...defaultDatePickerConfig}
-				label="label"
-			/>
-		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
+		const {container} = render(<DatePicker label="label" />);
 
 		expect(container.querySelector('.ddm-label')).toBeTruthy();
 	});
 
 	it('has a predefinedValue', () => {
 		const {container} = render(
-			<DatePickerWithProvider
-				{...defaultDatePickerConfig}
-				predefinedValue="06/02/2020"
+			<DatePicker
+				label="date"
+				locale="en_US"
+				localizedValue={{}}
+				name="dateField"
+				predefinedValue="2020-06-02"
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
+		const inputDatePicker = container
+			.getElementsByClassName('form-control')
+			.item(0);
 
-		expect(container).toMatchSnapshot();
+		expect(inputDatePicker).toHaveValue('06/02/2020');
 	});
 
-	it('expands the datepicker when clicking the calendar icon', async () => {
-		const {container} = render(
-			<DatePickerWithProvider {...defaultDatePickerConfig} />
+	it('expands the datepicker when clicking the calendar icon', () => {
+		const {container} = render(<DatePicker />);
+
+		const btnDropdown = container.querySelector(
+			'.date-picker-dropdown-toggle'
 		);
 
-		userEvent.click(
-			container.querySelector('.date-picker-dropdown-toggle')
+		userEvent.click(btnDropdown);
+
+		const dropdownDatePicker = document.body.querySelector(
+			'.date-picker-dropdown-menu.show'
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
-		await wait(() =>
-			expect(
-				document.body.querySelector('.date-picker-dropdown-menu.show')
-			).toBeTruthy()
-		);
+		expect(dropdownDatePicker).toBeTruthy();
 	});
 
-	it('fills the input with the current date selected on Date Picker', async () => {
-		const handleFieldEdited = jest.fn();
-
-		const {container, getAllByDisplayValue, getByLabelText} = render(
-			<DatePickerWithProvider
-				{...defaultDatePickerConfig}
-				onChange={handleFieldEdited}
-			/>
-		);
-
-		userEvent.click(
-			container.querySelector('.date-picker-dropdown-toggle')
-		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
-
-		userEvent.click(getByLabelText('Select current date'));
-
-		act(() => {
-			jest.runAllTimers();
-		});
-
-		await wait(() =>
-			expect(
-				getAllByDisplayValue(moment().format('MM/DD/YYYY'))
-			).toHaveLength(2)
-		);
-
-		expect(handleFieldEdited).toHaveBeenCalled();
-	});
-
-	it('call the onChange callback with a valid date', async () => {
+	it('fills the input with the current date selected on Date Picker', () => {
 		const onChange = jest.fn();
 
 		const {container, getAllByDisplayValue, getByLabelText} = render(
-			<DatePickerWithProvider
-				{...defaultDatePickerConfig}
-				onChange={onChange}
-			/>
+			<DatePicker locale="en_US" name="dateField" onChange={onChange} />
 		);
 
-		userEvent.click(
-			container.querySelector('.date-picker-dropdown-toggle')
+		const btnDropdown = container.querySelector(
+			'.date-picker-dropdown-toggle'
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
+		userEvent.click(btnDropdown);
 		userEvent.click(getByLabelText('Select current date'));
 
-		act(() => {
-			jest.runAllTimers();
-		});
+		const expectedDate = moment().format('MM/DD/YYYY');
 
-		const date = moment().format('YYYY-MM-DD');
-
-		await wait(() => expect(getAllByDisplayValue(date)).toBeTruthy());
-
-		expect(onChange).toHaveBeenCalledWith({}, date);
+		expect(onChange).toHaveBeenCalled();
+		expect(getAllByDisplayValue(expectedDate)).toHaveLength(2);
 	});
 
-	it('fills the input with the current date according to the locale', async () => {
-		const handleFieldEdited = jest.fn();
+	it('call the onChange callback with a valid date', () => {
+		const onChange = jest.fn();
 
 		const {container, getAllByDisplayValue, getByLabelText} = render(
-			<DatePickerWithProvider
-				{...defaultDatePickerConfig}
-				locale="ja_JP"
-				onChange={handleFieldEdited}
-			/>
+			<DatePicker locale="en_US" name="dateField" onChange={onChange} />
 		);
 
-		userEvent.click(
-			container.querySelector('.date-picker-dropdown-toggle')
+		const btnDropdown = container.querySelector(
+			'.date-picker-dropdown-toggle'
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
+		userEvent.click(btnDropdown);
 		userEvent.click(getByLabelText('Select current date'));
 
-		act(() => {
-			jest.runAllTimers();
-		});
+		const displayDate = moment().format('MM/DD/YYYY');
+		const formattedDate = moment().format('YYYY-MM-DD');
 
-		await wait(() =>
-			expect(
-				getAllByDisplayValue(moment().format('YYYY/MM/DD'))
-			).toBeTruthy()
+		expect(getAllByDisplayValue(displayDate)).toBeTruthy();
+		expect(onChange).toHaveBeenCalledWith({}, formattedDate);
+	});
+
+	it('fills the input with the current date according to the locale', () => {
+		const onChange = jest.fn();
+
+		const {container, getAllByDisplayValue, getByLabelText} = render(
+			<DatePicker locale="ja_JP" name="dateField" onChange={onChange} />
 		);
+
+		const btnDropdown = container.querySelector(
+			'.date-picker-dropdown-toggle'
+		);
+
+		userEvent.click(btnDropdown);
+		userEvent.click(getByLabelText('Select current date'));
+
+		const displayDate = moment().format('MM/DD/YYYY');
+
+		expect(getAllByDisplayValue(displayDate)).toBeTruthy();
 	});
 
 	it('fills the input completely when last item of a date mask is a symbol Ex: (YYYY.MM.DD.)', () => {
-		const handleFieldEdited = jest.fn();
+		const onChange = jest.fn();
 
 		const {container} = render(
 			<DatePicker
-				{...defaultDatePickerConfig}
+				defaultLanguageId="hu_HU"
 				label="Field date"
 				locale="hu_HU"
-				onChange={handleFieldEdited}
+				onChange={onChange}
 			/>
 		);
 
@@ -245,6 +151,6 @@ describe('DatePicker', () => {
 
 		userEvent.type(input, '1111.11.11.');
 
-		expect(input.value).toBe('1111.11.11.');
+		expect(input).toHaveValue('1111.11.11.');
 	});
 });
