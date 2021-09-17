@@ -184,6 +184,7 @@ const DatePicker = ({
 				}}
 				onNavigation={handleNavigation}
 				onValueChange={handleChange}
+				placeholder={dateFormat.replace(/\w/g, '_')}
 				ref={inputRef}
 				value={maskedDate}
 				weekdaysShort={WeekdayShort}
