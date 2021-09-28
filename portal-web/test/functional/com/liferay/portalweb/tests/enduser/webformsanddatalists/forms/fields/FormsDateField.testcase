@@ -225,11 +225,11 @@ definition {
 			locator1 = "FormFields#DATE_FIELD",
 			value1 = "Invalid Value, Date Field");
 
-		AssertTextEquals(
-			key_fieldName = "${fieldDateField}",
-			locator1 = "FormFields#DATE_FIELD",
-			value1 = "__/__/____");
-
+		FormFields.viewFieldPlaceholderText(
+			fieldName = "${fieldDateField}",
+			placehodlder="__/__/____"
+		);
+		
 		FormPortlet.submitWithValidationError();
 
 		FormFields.editDate(
