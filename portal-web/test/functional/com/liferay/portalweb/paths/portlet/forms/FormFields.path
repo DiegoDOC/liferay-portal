@@ -300,7 +300,7 @@
 </tr>
 <tr>
 	<td>DATE_FIELD</td>
-	<td>//div[contains(@data-field-name,'${key_fieldName}')]//input[@type='text']</td>
+	<td>//div[contains(@data-field-name,'${key_fieldName}')]//input[@type='text' and contains(@placeholder,'__/__/____')]</td>
 	<td></td>
 </tr>
 <tr>
