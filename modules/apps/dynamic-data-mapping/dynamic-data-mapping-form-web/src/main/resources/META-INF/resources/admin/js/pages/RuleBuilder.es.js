@@ -13,7 +13,6 @@
  */
 
 import ClayAlert from '@clayui/alert';
-import ClayButton from '@clayui/button';
 import {useResource} from '@clayui/data-provider';
 import ClayLayout from '@clayui/layout';
 import {
@@ -23,7 +22,7 @@ import {
 	useFormState,
 } from 'data-engine-js-components-web';
 import {fetch} from 'frontend-js-web';
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Route, Switch} from 'react-router-dom';
 
 import {ManagementToolbar} from '../components/ManagementToolbar.es';
@@ -133,9 +132,7 @@ export const RuleBuilder = ({history, location}) => {
 		navigate('/rules/editor');
 	}, [dispatch, navigate]);
 
-	const handleAlertButton = () => {
-		document.getElementById('alert').style.display = 'none';
-	};
+	const [show, setShow] = useState(true);
 
 	return (
 		<ClayLayout.Container>
@@ -172,23 +169,21 @@ export const RuleBuilder = ({history, location}) => {
 						const repeatable = field.repeatable;
 						if (repeatable) {
 							return (
-								<div id="alert">
-									<ClayAlert displayType="info" title="Info">
-										This Form contains Repeatable Fields.
-										Repeatable Fields are not selectable
-										under the conditions of a Rule.
-										<ClayAlert.Footer>
-											<ClayButton.Group>
-												<ClayButton
-													alert
-													onClick={handleAlertButton}
-												>
-													Understood
-												</ClayButton>
-											</ClayButton.Group>
-										</ClayAlert.Footer>
-									</ClayAlert>
-								</div>
+								<>
+									{show && (
+										<ClayAlert
+											displayType="info"
+											hideCloseIcon={false}
+											onClose={() => setShow(!show)}
+											title="Info"
+										>
+											This Form contains Repeatable
+											Fields. Repeatable Fields are not
+											selectable under the conditions of a
+											Rule.
+										</ClayAlert>
+									)}
+								</>
 							);
 						}
 					})}
