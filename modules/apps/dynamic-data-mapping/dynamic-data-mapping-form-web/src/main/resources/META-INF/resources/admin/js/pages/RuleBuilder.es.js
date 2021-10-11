@@ -12,6 +12,8 @@
  * details.
  */
 
+import ClayAlert from '@clayui/alert';
+import ClayButton from '@clayui/button';
 import {useResource} from '@clayui/data-provider';
 import ClayLayout from '@clayui/layout';
 import {
@@ -131,6 +133,10 @@ export const RuleBuilder = ({history, location}) => {
 		navigate('/rules/editor');
 	}, [dispatch, navigate]);
 
+	const handleAlertButton = () => {
+		document.getElementById('alert').style.display = 'none';
+	};
+
 	return (
 		<ClayLayout.Container>
 			<ManagementToolbar
@@ -162,6 +168,30 @@ export const RuleBuilder = ({history, location}) => {
 					/>
 				</Route>
 				<Route path="/rules/editor">
+					{fields.map((field) => {
+						const repeatable = field.repeatable;
+						if (repeatable) {
+							return (
+								<div id="alert">
+									<ClayAlert displayType="info" title="Info">
+										This Form contains Repeatable Fields.
+										Repeatable Fields are not selectable
+										under the conditions of a Rule.
+										<ClayAlert.Footer>
+											<ClayButton.Group>
+												<ClayButton
+													alert
+													onClick={handleAlertButton}
+												>
+													Understood
+												</ClayButton>
+											</ClayButton.Group>
+										</ClayAlert.Footer>
+									</ClayAlert>
+								</div>
+							);
+						}
+					})}
 					<RuleEditor
 						dataProvider={dataProvider}
 						dataProviderInstanceParameterSettingsURL={

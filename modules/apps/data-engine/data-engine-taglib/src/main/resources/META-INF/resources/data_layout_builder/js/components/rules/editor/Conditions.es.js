@@ -139,7 +139,7 @@ function FieldLeft({fields, left, onChange}) {
 					},
 				]}
 				onChange={onChange}
-				options={fields}
+				options={fields.filter((object) => !object.repeatable)}
 				placeholder={Liferay.Language.get('choose-an-option')}
 				showEmptyOption={false}
 				type="select"
