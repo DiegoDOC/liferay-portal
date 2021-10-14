@@ -19,7 +19,7 @@ export const FIELDS = [
 		label: 'date',
 		name: 'date',
 		options: [],
-		repeatable: true,
+		repeatable: false,
 		selector: '.date-picker',
 		settingsContext: {
 			pages: [],
@@ -34,7 +34,7 @@ export const FIELDS = [
 		label: 'text',
 		name: 'text',
 		options: [],
-		repeatable: true,
+		repeatable: false,
 		selector: 'input.ddm-field-text',
 		settingsContext: {
 			pages: [],
