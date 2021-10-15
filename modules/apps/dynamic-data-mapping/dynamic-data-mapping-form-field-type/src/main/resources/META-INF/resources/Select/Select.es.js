@@ -12,7 +12,7 @@
  * details.
  */
 
-import ClayDropDown from '@clayui/drop-down';
+import ClayDropDown, {Align} from '@clayui/drop-down';
 import {ClayCheckbox, ClayInput} from '@clayui/form';
 import React, {forwardRef, useEffect, useMemo, useRef, useState} from 'react';
 
@@ -367,6 +367,7 @@ const Trigger = forwardRef(
 );
 
 const Select = ({
+	align,
 	multiple,
 	onCloseButtonClicked,
 	onDropdownItemClicked,
@@ -503,6 +504,9 @@ const Select = ({
 			<ClayDropDown.Menu
 				active={expand}
 				alignElementRef={triggerElementRef}
+				alignmentPosition={
+					align == true ? Align.TopLeft : Align.BottomLeft
+				}
 				className="ddm-btn-full ddm-select-dropdown"
 				onKeyDown={(event) => {
 					switch (event.keyCode) {
@@ -546,6 +550,7 @@ const Select = ({
 };
 
 const Main = ({
+	align,
 	editingLanguageId,
 	fixedOptions = [],
 	label,
@@ -607,6 +612,7 @@ const Main = ({
 			{...otherProps}
 		>
 			<Select
+				align={align}
 				multiple={multiple}
 				name={`${name}_field`}
 				onCloseButtonClicked={({event, value}) =>

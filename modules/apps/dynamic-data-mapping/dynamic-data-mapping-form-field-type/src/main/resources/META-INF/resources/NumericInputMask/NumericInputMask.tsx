@@ -153,6 +153,7 @@ const NumericInputMask: React.FC<IProps> = ({
 			<div className="align-items-end d-flex position-relative">
 				<div className="pr-2 w-50">
 					<Select
+						align={true}
 						label={Liferay.Language.get('thousands-separator')}
 						name="thousandsSeparator"
 						onBlur={onBlur}
@@ -175,6 +176,7 @@ const NumericInputMask: React.FC<IProps> = ({
 				</div>
 				<div className="pl-2 w-50">
 					<Select
+						align={true}
 						label={Liferay.Language.get('decimal-separator')}
 						name="decimalSymbol"
 						onBlur={onBlur}
